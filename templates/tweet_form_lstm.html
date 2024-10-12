@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Sentimen Tweet Dengan LSTM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #6A256A;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .content {
+            margin: 20px;
+        }
+        button {
+            background-color: #933393;
+            color: white;
+            padding: 15px 32px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: white;
+            color: #933393;
+        }
+        footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Cek Sentimen Tweet Dengan LSTM
+    </header>
+    <div class="content">
+        <form method="POST">
+            <textarea name="tweet" rows="6" cols="100" placeholder="Enter your tweet here..."></textarea><br>
+            <button type="submit">Predict</button>
+        </form>
+        {% if original_tweet and get_sentiment %}
+            <h2>Original Tweet:</h2>
+            <p>{{ original_tweet }}</p>
+            <h2>Sentiment:</h2>
+            <p>{{ get_sentiment }}</p>
+        {% endif %}
+    </div>
+    <footer>
+        &copy; 2024 Kelompok 1 - Platinum
+    </footer>
+</body>
+</html>

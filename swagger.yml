@@ -1,0 +1,261 @@
+swagger: '2.0'
+info:
+  description: API untuk Cek Sentiment text
+  version: 1.0.0
+  title: Cek Sentiment data
+host: localhost:5000
+basePath: /
+tags:
+  - name: tweets
+    description: Cek Sentiment data
+schemes:
+  - http
+paths:
+  /tweet_text_nn:
+    get:
+      summary: "Formulir input tweet"
+      description: "Menampilkan formulir untuk mengirimkan tweet dan mendapatkan prediksi sentimen."
+      tags:
+        - tweets
+      responses:
+        200:
+          description: "Menampilkan halaman formulir untuk input tweet."
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<html>Formulir tweet</html>"
+
+    post:
+      summary: "Prediksi sentimen tweet"
+      description: "Menerima tweet dari formulir, membersihkan teks, melakukan preprocessing, dan memprediksi sentimen."
+      tags:
+        - tweets
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                tweet:
+                  type: string
+                  description: "Tweet yang akan diprediksi sentimennya"
+                  example: "Saya sangat senang hari ini!"
+      responses:
+        200:
+          description: "Prediksi sentimen tweet berhasil."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html>Tweet: Saya sangat senang hari ini!<br>Predicted Sentiment: Positive</html>"
+        400:
+          description: "Request tidak valid, biasanya jika tweet tidak diberikan."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Tweet tidak boleh kosong."
+        500:
+          description: "Terjadi kesalahan pada server."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error."
+  /tweet_text_lstm:
+    get:
+      summary: "Formulir input tweet untuk model LSTM"
+      description: "Menampilkan formulir untuk mengirimkan tweet dan mendapatkan prediksi sentimen menggunakan model LSTM."
+      tags:
+        - tweets
+      responses:
+        200:
+          description: "Menampilkan halaman formulir untuk input tweet."
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<html>Formulir tweet</html>"
+
+    post:
+      summary: "Prediksi sentimen tweet menggunakan LSTM"
+      description: "Menerima tweet dari formulir, membersihkan teks, melakukan preprocessing, dan memprediksi sentimen menggunakan model LSTM."
+      tags:
+        - tweets
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                tweet:
+                  type: string
+                  description: "Tweet yang akan diprediksi sentimennya"
+                  example: "Hari ini sangat menyenangkan!"
+      responses:
+        200:
+          description: "Prediksi sentimen tweet berhasil."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html>Tweet: Hari ini sangat menyenangkan!<br>Predicted Sentiment: Positive</html>"
+        400:
+          description: "Request tidak valid, biasanya jika tweet tidak diberikan."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Tweet tidak boleh kosong."
+        500:
+          description: "Terjadi kesalahan pada server."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error."
+  /upload_process_nn:
+    get:
+      summary: "Formulir untuk mengunggah file CSV"
+      description: "Menampilkan halaman formulir untuk mengunggah file CSV yang berisi tweet dan mendapatkan prediksi sentimen menggunakan model neural network."
+      tags:
+        - tweets
+      responses:
+        200:
+          description: "Menampilkan halaman formulir untuk mengunggah file."
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<html>Formulir unggah file</html>"
+
+    post:
+      summary: "Prediksi sentimen dari file CSV yang diunggah"
+      description: "Menerima file CSV dari formulir, melakukan preprocessing pada setiap tweet, dan memprediksi sentimen menggunakan model neural network."
+      tags:
+        - tweets
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: "File CSV yang berisi tweet untuk diprediksi sentimennya"
+                  example: "tweets.csv"
+      responses:
+        200:
+          description: "Prediksi sentimen dari file CSV berhasil, mengembalikan file CSV dengan hasil prediksi."
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+                example: |
+                  original_tweet,cleaned_tweet,predicted_sentiments
+                  "Hari ini sangat menyenangkan!","hari ini sangat menyenangkan","Positive"
+                  "Cuacanya buruk sekali hari ini","cuacanya buruk sekali hari ini","Negative"
+        400:
+          description: "Request tidak valid, biasanya jika file tidak diunggah atau format file tidak benar."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No file part or Invalid file format"
+        500:
+          description: "Terjadi kesalahan pada server."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error."
+
+  /upload_process_lstm:
+    get:
+      summary: "Formulir untuk mengunggah file CSV"
+      description: "Menampilkan halaman formulir untuk mengunggah file CSV yang berisi tweet dan mendapatkan prediksi sentimen menggunakan model LSTM."
+      tags:
+        - tweets
+      responses:
+        200:
+          description: "Menampilkan halaman formulir untuk mengunggah file."
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<html>Formulir unggah file</html>"
+
+    post:
+      summary: "Prediksi sentimen dari file CSV yang diunggah menggunakan model LSTM"
+      description: "Menerima file CSV dari formulir, melakukan preprocessing pada setiap tweet, dan memprediksi sentimen menggunakan model LSTM."
+      tags:
+        - tweets
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: "File CSV yang berisi tweet untuk diprediksi sentimennya"
+                  example: "tweets.csv"
+      responses:
+        200:
+          description: "Prediksi sentimen dari file CSV berhasil, mengembalikan file CSV dengan hasil prediksi."
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+                example: |
+                  original_tweet,cleaned_tweet,sentiment
+                  "Sangat senang dengan cuaca hari ini","sangat senang dengan cuaca hari ini","Positive"
+                  "Hujan terus menerus membuat suasana menjadi buruk","hujan terus menerus membuat suasana menjadi buruk","Negative"
+        400:
+          description: "Request tidak valid, biasanya jika file tidak diunggah atau format file tidak benar."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid file format"
+    
+        500:
+          description: "Terjadi kesalahan pada server."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error."
